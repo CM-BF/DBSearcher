@@ -38,19 +38,19 @@ public class Search {
 	
 	
 	public List<Map<String, String>> search(String subterm, String ddlterm, String timeterm, String topicterm, String siteterm) throws Exception {
-		String index = "index";
+		String index = "/home/levishery/eclipse-workspace/DBSearcher/WebContent/index";
 	    int repeat = 0;
 	    BooleanQuery booleanquery;
 	    List<Map<String, String>> resultdocs = new ArrayList<>();
 	    
-	    
+	    System.out.println("entry search!");
 	    IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
 	    IndexSearcher searcher = new IndexSearcher(reader);
 	    Analyzer analyzer = new StandardAnalyzer();
 	    
 	    //*********************** construct queries*********************
 	    Builder booleanbuilder = new BooleanQuery.Builder();
-	    if(!subterm.equals("")) {
+	    if(subterm!=null && !subterm.equals("")) {
 	    	Query subquery = new FuzzyQuery(new Term("subject", subterm));
 	    	booleanbuilder.add(subquery, BooleanClause.Occur.MUST);
 	    }
@@ -58,20 +58,28 @@ public class Search {
 //	    	Query ddlquery = new FuzzyQuery(new Term("SubmissionDDL", ddlterm));
 //	    	booleanbuilder.add(ddlquery, BooleanClause.Occur.MUST);
 //	    }
-	    if(!timeterm.equals("")) {
+	    
+	    System.out.println("sub"+subterm);
+	    System.out.println(ddlterm);
+	    System.out.println(timeterm);
+	    System.out.println("topic:"+topicterm);
+	    System.out.println(siteterm);
+	    if(timeterm!=null && !timeterm.equals("")) {
 	    	Query timequery = new FuzzyQuery(new Term("time", timeterm));
 	    	booleanbuilder.add(timequery, BooleanClause.Occur.MUST);
 	    }
-	    if(!topicterm.equals("")) {
+	    if(topicterm!=null && !topicterm.equals("")) {
+	    	System.out.println("add topic!");
 	    	Query topicquery = new FuzzyQuery(new Term("topic", topicterm));
 	    	booleanbuilder.add(topicquery, BooleanClause.Occur.MUST);
 	    }
-	    if(!siteterm.equals("")) {
+	    if(siteterm!=null && !siteterm.equals("")) {
 	    	Query sitequery = new FuzzyQuery(new Term("site", siteterm));
 	    	booleanbuilder.add(sitequery, BooleanClause.Occur.MUST);
 	    }
 	    
 	    booleanquery = booleanbuilder.build();
+	    System.out.println(booleanquery);
 	    
 //	    Sort sort = new SortField(field, comparator);
 	    

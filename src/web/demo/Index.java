@@ -65,7 +65,7 @@ public class Index {
   /** Index all text files under a directory. 
  * @throws Exception */
   public static void main(String[] args) throws Exception {
-    String indexPath = "index";
+    String indexPath = "WebContent/index";
     boolean create = true;
     
     Date start = new Date();

@@ -203,6 +203,7 @@ public class IndexFiles {
       JSONParser parser = new JSONParser();
       Object obj = parser.parse(s);
       JSONObject dir = (JSONObject)obj;
+      System.out.println(dir);
       // add content
       String content = dir.get("content").toString();
       doc.add(new TextField("content", content, Field.Store.YES));

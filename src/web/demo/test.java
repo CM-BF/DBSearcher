@@ -78,6 +78,12 @@ org.apache.lucene.index.DirectoryReader,
 org.apache.lucene.index.IndexReader,
 org.apache.lucene.index.Term,
 org.apache.lucene.queryparser.classic.QueryParser,
-org.apache.lucene.store.FSDirectory*/
+org.apache.lucene.store.FSDirectory
+searcher.search(request.getParameter("subject"),
+			request.getParameter("Topic"), request.getParameter("SubmissiontDDL"),
+			request.getParameter("ConferenceTime"), request.getParameter("Site"));
+*
+*
+*/
 	}
 }
