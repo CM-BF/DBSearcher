@@ -9,6 +9,9 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <listener>
+         <listener-class>web.server.MyTimer</listener-class>
+     </listener>
   <servlet>  
      <!-- 类名 -->  
     <servlet-name>HelloServlet</servlet-name>  
@@ -20,4 +23,5 @@
     <!-- 访问的网址 -->  
     <url-pattern>/DBSearcher/HelloServlet</url-pattern>  
     </servlet-mapping> 
+    
 </web-app>

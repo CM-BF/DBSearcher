@@ -36,7 +36,7 @@ import org.json.simple.parser.ParseException;
 
 public class nlp 
 {
-    public static void main( String[] args ) throws Exception
+    public static void extract() throws Exception
     {
     	List<Integer> sbdate = new ArrayList<>();
     	List<Integer> sbtopic = new ArrayList<>();

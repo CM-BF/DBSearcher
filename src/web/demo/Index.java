@@ -65,8 +65,8 @@ public class Index {
 
   /** Index all text files under a directory. 
  * @throws Exception */
-  public static void main(String[] args) throws Exception {
-    String indexPath = "WebContent/index";
+  public static void index() throws Exception {
+    String indexPath = "/home/levishery/eclipse-workspace/DBSearcher/WebContent/index";
     boolean create = true;
     
     Date start = new Date();

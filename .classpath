@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="/home/levishery/eclipse/lib/lucene-7.5.0/queryparser/lucene-queryparser-7.5.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/nlpcore"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/quartz"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
