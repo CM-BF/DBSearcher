@@ -1,6 +1,31 @@
 package web.demo;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BooleanQuery.Builder;
+import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.FSDirectory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,16 +59,25 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-
 public class test {
 	public static void main(String[] args) throws Exception{
-		Path file = Paths.get("documents/Mail0.txt");
-		try (InputStream stream = Files.newInputStream(file)) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
-			String s = reader.readLine();
-			System.out.println(s);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+		Search searcher = new Search();
+		List<Map<String, String>> result = searcher.search("", "", "", "data", "");
+//		System.out.println(result);
+//		IndexSearcher searcher = search.search(request.getParameter("subject"), request.getParameter("Topic"),
+//				request.getParameter("SubmissionDDL"), request.getParameter("MeetingTime"));
+//		TopDocs results = searcher.search(search.booleanquery, hitsPerPage);
+//	    ScoreDoc[] hits = results.scoreDocs;
+//	    int numTotalHits = Math.toIntExact(results.totalHits);
+//	    out.println(numTotalHits + " total matching documents");
+		System.out.println("End");
+		/*,org.apache.lucene.analysis.Analyzer,
+org.apache.lucene.analysis.standard.StandardAnalyzer,
+org.apache.lucene.document.Document,
+org.apache.lucene.index.DirectoryReader,
+org.apache.lucene.index.IndexReader,
+org.apache.lucene.index.Term,
+org.apache.lucene.queryparser.classic.QueryParser,
+org.apache.lucene.store.FSDirectory*/
 	}
 }
