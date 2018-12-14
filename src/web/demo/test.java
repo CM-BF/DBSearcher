@@ -62,7 +62,7 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 public class test {
 	public static void main(String[] args) throws Exception{
 		Search searcher = new Search();
-		List<Map<String, String>> result = searcher.search("", "", "", "data", "");
+		List<Map<String, String>> result = searcher.search("", "", "", "data", "", "");
 //		System.out.println(result);
 //		IndexSearcher searcher = search.search(request.getParameter("subject"), request.getParameter("Topic"),
 //				request.getParameter("SubmissionDDL"), request.getParameter("MeetingTime"));

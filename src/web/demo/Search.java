@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -37,7 +38,7 @@ public class Search {
 	public int numTotalHits;
 	
 	
-	public List<Map<String, String>> search(String subterm, String ddlterm, String timeterm, String topicterm, String siteterm) throws Exception {
+	public List<Map<String, String>> search(String subterm, String ddlterm, String timeterm, String topicterm, String siteterm, String dateterm) throws Exception {
 		String index = "/home/levishery/eclipse-workspace/DBSearcher/WebContent/index";
 	    int repeat = 0;
 	    BooleanQuery booleanquery;
@@ -51,13 +52,15 @@ public class Search {
 	    //*********************** construct queries*********************
 	    Builder booleanbuilder = new BooleanQuery.Builder();
 	    if(subterm!=null && !subterm.equals("")) {
-	    	Query subquery = new FuzzyQuery(new Term("subject", subterm));
+		    QueryParser parser = new QueryParser("subject", analyzer);
+		    Query subquery = parser.parse(subterm);
 	    	booleanbuilder.add(subquery, BooleanClause.Occur.MUST);
 	    }
-//	    if(!ddlterm.equals("") {
-//	    	Query ddlquery = new FuzzyQuery(new Term("SubmissionDDL", ddlterm));
-//	    	booleanbuilder.add(ddlquery, BooleanClause.Occur.MUST);
-//	    }
+	    if(ddlterm!=null && !ddlterm.equals("")) {
+	    	QueryParser parser = new QueryParser("deadline", analyzer);
+		    Query ddlquery = parser.parse(ddlterm);
+	    	booleanbuilder.add(ddlquery, BooleanClause.Occur.MUST);
+	    }
 	    
 	    System.out.println("sub"+subterm);
 	    System.out.println(ddlterm);
@@ -65,17 +68,24 @@ public class Search {
 	    System.out.println("topic:"+topicterm);
 	    System.out.println(siteterm);
 	    if(timeterm!=null && !timeterm.equals("")) {
-	    	Query timequery = new FuzzyQuery(new Term("time", timeterm));
-	    	booleanbuilder.add(timequery, BooleanClause.Occur.MUST);
+	    	QueryParser parser = new QueryParser("conference", analyzer);
+		    Query timequery = parser.parse(timeterm);
+		    booleanbuilder.add(timequery, BooleanClause.Occur.MUST);
 	    }
 	    if(topicterm!=null && !topicterm.equals("")) {
-	    	System.out.println("add topic!");
-	    	Query topicquery = new FuzzyQuery(new Term("topic", topicterm));
-	    	booleanbuilder.add(topicquery, BooleanClause.Occur.MUST);
+	    	QueryParser parser = new QueryParser("topic", analyzer);
+		    Query topicquery = parser.parse(topicterm);
+		    booleanbuilder.add(topicquery, BooleanClause.Occur.MUST);
 	    }
 	    if(siteterm!=null && !siteterm.equals("")) {
-	    	Query sitequery = new FuzzyQuery(new Term("site", siteterm));
-	    	booleanbuilder.add(sitequery, BooleanClause.Occur.MUST);
+	    	QueryParser parser = new QueryParser("site", analyzer);
+		    Query sitequery = parser.parse(siteterm);
+		    booleanbuilder.add(sitequery, BooleanClause.Occur.MUST);
+	    }
+	    if(dateterm!=null && !dateterm.equals("")) {
+	    	QueryParser parser = new QueryParser("date", analyzer);
+		    Query datequery = parser.parse(dateterm);
+		    booleanbuilder.add(datequery, BooleanClause.Occur.MUST);
 	    }
 	    
 	    booleanquery = booleanbuilder.build();
@@ -106,15 +116,20 @@ public class Search {
 		    	Map<String, String> docfields = new HashMap<>();
 		    	docfields.put("Subject", doc.get("subject"));
 		    	docfields.put("SubmissionDDL", doc.get("deadline"));
-		    	docfields.put("ConferenceTime", doc.get("time"));
+		    	docfields.put("ConferenceTime", doc.get("conference"));
 		    	docfields.put("DetailMessage", doc.get("url"));
 		    	docfields.put("Topic", doc.get("topic"));
 		    	docfields.put("Site", doc.get("site"));
+		    	docfields.put("ImportantDate", doc.get("time"));
 		    	resultdocs.add(docfields);
 		    }
 	    }
 	    
 	    return resultdocs;
+	}
+	public boolean isInteger(String str) {    
+	    Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");    
+	    return pattern.matcher(str).matches();    
 	}
 	
 	

@@ -250,6 +250,7 @@ public class nlp
             	UpDownSigns.add("*");
             	UpDownSigns.add("=");
             	UpDownSigns.add("-");
+            	UpDownSigns.add("#");
             String UpDownSign = "*";
             
             //line-by-line method
@@ -384,14 +385,17 @@ public class nlp
             
             // For SB author
             int sbi=0;
-            while (topic.isEmpty()) {
-            	if(!lines[sbi].equals("")) {
-            		System.out.println("sb author: topic");
-            		sbtopic.add(num);
-    	        	topic.add(lines[sbi]);
-    	        	if(Debug) System.out.println(topic);
-            	}
-            	sbi++;
+//            while (topic.isEmpty()) {
+//            	if(!lines[sbi].equals("")) {
+//            		System.out.println("sb author: topic");
+//            		sbtopic.add(num);
+//    	        	topic.add(lines[sbi]);
+//    	        	if(Debug) System.out.println(topic);
+//            	}
+//            	sbi++;
+//            }
+            if (topic.isEmpty()) {
+            	topic.add(dir.get("content").toString());
             }
             
             /* *******************************************************************
@@ -431,13 +435,38 @@ public class nlp
             }
             dir.put("Site",	site);
 			if(Debug) System.out.println(dir.get("Site"));
+			/* *********************************************
+			 * ***************Conference********************
+			 * **********************************************/
+			List<String> Conference = new ArrayList<>();
+			for(int i=0;i<words.size();i++) {
+				if(nerTags.get(i).contains("DATE")&&words.get(i).contains("-")) {
+					int count=0;
+					for(int j=i-2; j<i+3&&j<words.size(); j++) {
+						if (j<0) j=0;
+						if(nerTags.get(j).contains("DATE")) {
+							count++;
+						}
+					}
+					if(count < 3) continue;
+					for(int j=i-2; j<i+3&&j<words.size(); j++) {
+						if (j<0) j=0;
+						if(nerTags.get(j).contains("DATE")) {
+							Conference.add(words.get(j));
+						}
+					}
+					break;
+				}
+			}
+			dir.put("Conference", String.join(" ", Conference).toString());
+			if(Debug) System.out.println("conference:" + dir.get("Conference"));
             /* ************************************************
              * ***************Save json file*******************
              * ************************************************ */
             StringWriter out = new StringWriter();
             dir.writeJSONString(out);
             String jsontext = out.toString();
-            Path pathout = Paths.get("/home/levishery/eclipse-workspace/demo/documents/" + "Mail" + num + ".txt");
+            Path pathout = Paths.get("/home/levishery/eclipse-workspace/DBSearcher/documents/" + "Mail" + num + ".txt");
             try {
             	BufferedWriter writer = Files.newBufferedWriter(pathout, StandardCharsets.UTF_8);
             	writer.write(jsontext);

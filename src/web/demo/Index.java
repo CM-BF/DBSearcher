@@ -47,6 +47,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -144,18 +145,22 @@ public class Index {
           // add content
           String content = dir.get("content").toString();
           doc.add(new TextField("content", content, Field.Store.YES));
-          // add url
-          doc.add(new TextField("subject", dir.get("subject").toString(), Field.Store.YES));
+          // add subject
+          doc.add(new TextField("subject", String.join("", (JSONArray)dir.get("subject")).toString(), Field.Store.YES));
           // add author
           doc.add(new TextField("author", dir.get("author").toString(), Field.Store.YES));
           // add topic
-          doc.add(new TextField("topic", dir.get("Topic").toString(), Field.Store.YES));
+          doc.add(new TextField("topic", String.join("\n", (JSONArray)dir.get("Topic")).toString(), Field.Store.YES));
           // add ddl
-          doc.add(new TextField("deadline", dir.get("deadline").toString(), Field.Store.YES));
+          doc.add(new TextField("deadline", String.join("", (JSONArray)dir.get("deadline")).toString(), Field.Store.YES));
           // add Time
-          doc.add(new TextField("time", dir.get("Time").toString(), Field.Store.YES));
+          doc.add(new TextField("time", String.join("\n", (JSONArray)dir.get("Time")).toString(), Field.Store.YES));
           // add Site
-          doc.add(new TextField("site", dir.get("Site").toString(), Field.Store.YES));
+          doc.add(new TextField("site", dir.get("Site").toString().replaceAll(",", " "), Field.Store.YES));
+          // add url
+          doc.add(new TextField("url", dir.get("url").toString(), Field.Store.YES));
+          // add conference
+          doc.add(new TextField("conference", dir.get("Conference").toString(), Field.Store.YES));
 
 
           
